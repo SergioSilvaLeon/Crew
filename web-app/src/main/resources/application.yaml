@@ -1,0 +1,14 @@
+# -----------------------
+# Spring
+# -----------------------
+spring:
+  mvc:
+    view:
+      prefix: /WEB-INF/jsp/
+      suffix: .jsp
+
+# ---------------
+# Server
+# ---------------
+server:
+  port: 3000
