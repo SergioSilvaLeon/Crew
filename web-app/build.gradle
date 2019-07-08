@@ -37,5 +37,6 @@ dependencies {
     compile("org.apache.activemq:activemq-broker")
     compile("com.fasterxml.jackson.core:jackson-databind")
     testCompile('junit:junit:4.11')
+    testCompile("org.springframework.boot:spring-boot-starter-test")
     providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
 }
