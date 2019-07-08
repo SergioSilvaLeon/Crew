@@ -29,4 +29,5 @@ dependencies {
     compile("org.apache.activemq:activemq-broker")
     compile("com.fasterxml.jackson.core:jackson-databind")
     compile("org.springframework.boot:spring-boot-starter-data-mongodb")
+    compile project(':common-library')
 }

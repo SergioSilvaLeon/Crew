@@ -1,5 +1,6 @@
 package com.nearsoft.dao;
 
+import com.nearsoft.commonlibrary.model.Task;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jms.annotation.EnableJms;
@@ -10,24 +11,36 @@ import java.util.List;
 
 @Component
 @EnableJms
-public class TodoDAOImpl implements TodoDAO {
+public class TaskRepositoryImpl implements TaskRepository {
 
     private final Logger mLogger = LoggerFactory.getLogger(this.getClass());
     private JmsTemplate mJmsTemplate;
 
-    public TodoDAOImpl(JmsTemplate jmsTemplate) {
+    public TaskRepositoryImpl(JmsTemplate jmsTemplate) {
         mJmsTemplate = jmsTemplate;
     }
 
     @Override
-    public void addTask(String t) {
-        mLogger.info("[x] Task Sent {} ", t);
-        mJmsTemplate.convertAndSend("mailbox", "Get Crayons");
+    public void saveTask(Task task) {
+        mLogger.info("[x] Task Sent {} ", task);
+        mJmsTemplate.convertAndSend("mailbox", task);
     }
 
     @Override
-    public List<String> getTasks() {
+    public List<Task> getTasks() {
         // TODO: Get tasks
         return null;
     }
+
+    @Override
+    public Task findById(long id) {
+        return null;
+    }
+
+    @Override
+    public void delete(Task task) {
+
+    }
+
+
 }

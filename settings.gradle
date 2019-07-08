@@ -1,3 +1,5 @@
 rootProject.name = 'crew-service'
 include 'micro-service-task'
 include 'web-app'
+include 'common-library'
+
