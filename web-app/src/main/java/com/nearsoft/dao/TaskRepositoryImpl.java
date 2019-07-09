@@ -33,6 +33,8 @@ public class TaskRepositoryImpl implements TaskRepository {
     @Override
     public void saveTask(Task task) {
         mLogger.info("[x] Save Task Sent {} ", task);
+        // TODO: Set ID automatically
+        task.setId(2L);
         jmsTemplate.convertAndSend(ActiveMqConfig.QUEUE_CREATE_TASK, task);
     }
 

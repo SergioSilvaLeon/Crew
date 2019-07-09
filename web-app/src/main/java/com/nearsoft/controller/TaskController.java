@@ -22,6 +22,11 @@ public class TaskController {
         respository = dao;
     }
 
+    @GetMapping("/signup")
+    public String showSignUpForm(Task task) {
+        return "add-task";
+    }
+
     @PostMapping("/addTask")
     public String addTask(@Valid Task task, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
@@ -63,7 +68,6 @@ public class TaskController {
 
     @GetMapping("/greeting")
     public String greeting(@RequestParam(name = "name", required = false, defaultValue = "World") String name, Model model) {
-//        respository.saveTask();
         model.addAttribute("name", name);
         return "greeting";
     }

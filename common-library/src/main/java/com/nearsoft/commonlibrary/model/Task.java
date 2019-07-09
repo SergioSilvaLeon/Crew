@@ -4,16 +4,42 @@ import org.springframework.data.annotation.Id;
 
 import java.io.Serializable;
 
-
 public class Task implements Serializable {
 
     @Id
-    public String id;
-    public String name;
-    public String category;
+    private Long id;
+    private String name;
+    private String category;
+
+    public Task() {
+    }
 
     public Task(String name, String category) {
         this.name = name;
+        this.category = category;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
         this.category = category;
     }
 
