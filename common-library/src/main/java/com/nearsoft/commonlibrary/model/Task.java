@@ -2,8 +2,10 @@ package com.nearsoft.commonlibrary.model;
 
 import org.springframework.data.annotation.Id;
 
+import java.io.Serializable;
 
-public class Task {
+
+public class Task implements Serializable {
 
     @Id
     public String id;

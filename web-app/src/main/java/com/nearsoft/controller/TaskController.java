@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.jms.JMSException;
 import javax.validation.Valid;
 
 @Controller
@@ -32,7 +33,7 @@ public class TaskController {
     }
 
     @GetMapping("/edit/{id}")
-    public String showUpdateForm(@PathVariable("id") long id, Model model) {
+    public String showUpdateForm(@PathVariable("id") long id, Model model) throws JMSException {
         Task task = respository.findById(id);
 
         model.addAttribute("task", task);
@@ -53,7 +54,7 @@ public class TaskController {
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteUser(@PathVariable("id") long id, Model model) {
+    public String deleteUser(@PathVariable("id") long id, Model model) throws JMSException {
         Task task = respository.findById(id);
         respository.delete(task);
         model.addAttribute("users", respository.getTasks());

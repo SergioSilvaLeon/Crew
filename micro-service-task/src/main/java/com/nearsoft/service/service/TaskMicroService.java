@@ -1,61 +1,64 @@
 package com.nearsoft.service.service;
 
-import com.nearsoft.service.repository.Customer;
-import com.nearsoft.service.repository.CustomerRepository;
+import com.nearsoft.commonlibrary.configuration.ActiveMqConfig;
+import com.nearsoft.commonlibrary.model.Task;
+import com.nearsoft.service.repository.TaskRepository;
+import org.apache.activemq.command.ActiveMQObjectMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jms.annotation.JmsListener;
+import org.springframework.jms.listener.SessionAwareMessageListener;
 import org.springframework.stereotype.Service;
 
+import javax.jms.*;
 import java.util.List;
 
 @Service
-public class TaskMicroService {
+public class TaskMicroService implements SessionAwareMessageListener<Message> {
 
     private final Logger mLogger = LoggerFactory.getLogger(TaskMicroService.class);
-    private CustomerRepository mTaskRepository;
+    private TaskRepository mTaskRepository;
 
-    public TaskMicroService(CustomerRepository mTaskRepository) {
+    public TaskMicroService(TaskRepository mTaskRepository) {
         this.mTaskRepository = mTaskRepository;
     }
 
-    @JmsListener(destination = "mailbox")
-    public void createTask(String task) {
+    @JmsListener(destination = ActiveMqConfig.QUEUE_CREATE_TASK)
+    public void saveTask(Task task) {
         mLogger.info("[x] Received task {}", task);
-
-        // TODO: Insert task into repostory
-        mTaskRepository.deleteAll();
-
-        // save a couple of customers
-        mTaskRepository.save(new Customer("Alice", "Smith"));
-        mTaskRepository.save(new Customer("Bob", "Smith"));
-
-        // fetch all customers
-        System.out.println("Customers found with findAll():");
-        System.out.println("-------------------------------");
-        for (Customer customer : mTaskRepository.findAll()) {
-            System.out.println(customer);
-        }
-        System.out.println();
-
-        // fetch an individual customer
-        System.out.println("Customer found with findByFirstName('Alice'):");
-        System.out.println("--------------------------------");
-        System.out.println(mTaskRepository.findByFirstName("Alice"));
-
-        System.out.println("Customers found with findByLastName('Smith'):");
-        System.out.println("--------------------------------");
-        for (Customer customer : mTaskRepository.findByLastName("Smith")) {
-            System.out.println(customer);
-        }
-
+        mTaskRepository.save(task);
     }
 
-    // TODO: Add Listener
-    public List<String> getTasks() {
+    @JmsListener(destination = ActiveMqConfig.QUEUE_GET_TASK)
+    public List<Task> getTasks() {
         mLogger.info("[x] Received  Get Tasks Request");
-
-        return null;
+        return mTaskRepository.findAll();
     }
 
+//    @JmsListener(destination = ActiveMqConfig.QUEUE_GET_TASK_BY_ID)
+//    public Optional<Task> getTaskById(Task task) {
+//        return mTaskRepository.findById(task.id);
+//    }
+
+    @JmsListener(destination = ActiveMqConfig.QUEUE_DELETE_TASK)
+    public void deleteTask(Task task) {
+        mTaskRepository.delete(task);
+    }
+
+    @JmsListener(destination = ActiveMqConfig.QUEUE_GET_TASK_BY_ID)
+    @Override
+    public void onMessage(Message message, Session session) throws JMSException {
+        Long id = (Long) ((ActiveMQObjectMessage)message).getObject();
+//        Optional<Task> task = mTaskRepository.findById(String.valueOf(id));
+        Task task = new Task("homework", "school");
+
+        // done handling the request, now create a response message
+        final ObjectMessage responseMessage = new ActiveMQObjectMessage();
+        responseMessage.setJMSCorrelationID(message.getJMSCorrelationID());
+        responseMessage.setObject(task);
+
+        // Message sent back to the replyTo address of the income message.
+        final MessageProducer producer = session.createProducer(message.getJMSReplyTo());
+        producer.send(responseMessage);
+    }
 }
