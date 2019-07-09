@@ -48,7 +48,7 @@ public class TaskMicroService implements SessionAwareMessageListener<Message> {
     @JmsListener(destination = ActiveMqConfig.QUEUE_GET_TASK_BY_ID)
     @Override
     public void onMessage(Message message, Session session) throws JMSException {
-        Long id = (Long) ((ActiveMQObjectMessage)message).getObject();
+        String id = (String) ((ActiveMQObjectMessage) message).getObject();
 //        Optional<Task> task = mTaskRepository.findById(String.valueOf(id));
         Task task = new Task("homework", "school");
 
