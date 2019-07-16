@@ -2,7 +2,6 @@ package com.nearsoft.dao;
 
 import com.nearsoft.commonlibrary.model.Task;
 
-import javax.jms.JMSException;
 import java.util.List;
 
 public interface TaskRepository {
@@ -11,7 +10,7 @@ public interface TaskRepository {
 
     List<Task> getTasks();
 
-    Task findById(long id) throws JMSException;
+    Task findById(String id);
 
     void delete(Task task);
 

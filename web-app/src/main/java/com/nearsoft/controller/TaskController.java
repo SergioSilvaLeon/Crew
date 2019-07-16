@@ -38,7 +38,7 @@ public class TaskController {
     }
 
     @GetMapping("/edit/{id}")
-    public String showUpdateForm(@PathVariable("id") long id, Model model) throws JMSException {
+    public String showUpdateForm(@PathVariable("id") String id, Model model) {
         Task task = respository.findById(id);
 
         model.addAttribute("task", task);
@@ -46,10 +46,8 @@ public class TaskController {
     }
 
     @PostMapping("/update/{id}")
-    public String updateUser(@PathVariable("id") long id, @Valid Task task,
-                             BindingResult result, Model model) {
+    public String updateUser(@PathVariable("id") String id, @Valid Task task, BindingResult result, Model model) {
         if (result.hasErrors()) {
-//            task.setId(id);
             return "update-task";
         }
 
@@ -59,7 +57,7 @@ public class TaskController {
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteUser(@PathVariable("id") long id, Model model) throws JMSException {
+    public String deleteUser(@PathVariable("id") String id, Model model) throws JMSException {
         Task task = respository.findById(id);
         respository.delete(task);
         model.addAttribute("users", respository.getTasks());

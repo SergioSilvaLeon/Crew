@@ -1,0 +1,6 @@
+rabbitmq:
+  queue:
+    createproduct: QUEUE_CREATE_PRODUCT
+    getproducts: QUEUE_GET_PRODUCTS
+  exchange: EXCHANGE_NAME_PRODUCT
+  routingkey: ROUTING_KEY_PRODUCT

@@ -1,0 +1,6 @@
+# --------------
+# ActiveMq
+# --------------
+spring:
+  rabbitmq:
+    port: 3001
