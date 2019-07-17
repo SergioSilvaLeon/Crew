@@ -15,7 +15,6 @@ public class TaskMicroService {
 
     private final Logger mLogger = LoggerFactory.getLogger(TaskMicroService.class);
     private TaskRepository mTaskRepository;
-    // TODO: Add queue names staticallly
 
     public TaskMicroService(TaskRepository taskRepository) {
         mTaskRepository = taskRepository;
@@ -33,9 +32,17 @@ public class TaskMicroService {
         return mTaskRepository.findAll();
     }
 
-    public void deleteTask(Task task) {
-        mTaskRepository.delete(task);
+    @RabbitListener(queues = RabbitMqConfig.QUEUE_GET_TASK_BY_ID)
+    public Task findTaskById(String id) {
+        mLogger.info("[x] Received Find Task by ID {}", id);
+        return mTaskRepository.findById(id).get();
     }
 
+    @RabbitListener(queues = RabbitMqConfig.QUEUE_DELETE_TASK)
+    public void deleteTask(Task task) {
+        mLogger.info("[x] Received Delete Task");
+        mTaskRepository.deleteAll();
+        mTaskRepository.delete(task);
+    }
 
 }

@@ -29,8 +29,8 @@ public class TaskRepositoryImpl implements TaskRepository {
     public List<Task> getTasks() {
         List<Task> response =
                 (List<Task>) mRabbitTemplate.convertSendAndReceive(
-                        RabbitMqConfig.EXCHANGE_NAME_PRODUCT,
-                        RabbitMqConfig.ROUTING_KEY_PRODUCT,
+                        RabbitMqConfig.EXCHANGE_NAME_TASK,
+                        RabbitMqConfig.ROUTING_KEY_TASK,
                         ""
                 );
         return response;
@@ -38,12 +38,17 @@ public class TaskRepositoryImpl implements TaskRepository {
 
     @Override
     public Task findById(String id) {
-        return null;
+        return (Task) mRabbitTemplate.convertSendAndReceive(
+                RabbitMqConfig.EXCHANGE_FIND_TASK_BY_ID,
+                RabbitMqConfig.ROUTING_KEY_TASK_BY_ID,
+                id
+        );
     }
 
     @Override
     public void delete(Task task) {
-        mLogger.info("[x] Save Task Sent {} ", task);
+        mLogger.info("[x] Delete Task Sent {} ", task);
+        mRabbitTemplate.convertAndSend(RabbitMqConfig.QUEUE_DELETE_TASK, task);
     }
 
 

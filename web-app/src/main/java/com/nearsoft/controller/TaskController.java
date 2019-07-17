@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.jms.JMSException;
 import javax.validation.Valid;
+
 
 @Controller
 public class TaskController {
@@ -22,13 +22,13 @@ public class TaskController {
         respository = dao;
     }
 
-    @GetMapping("/signup")
+    @GetMapping("/task")
     public String showSignUpForm(Task task) {
         return "add-task";
     }
 
     @PostMapping("/addTask")
-    public String addTask(@Valid Task task, BindingResult bindingResult, Model model) {
+    public String addTask(Task task, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             return "add-task";
         }
@@ -57,7 +57,7 @@ public class TaskController {
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteUser(@PathVariable("id") String id, Model model) throws JMSException {
+    public String deleteUser(@PathVariable("id") String id, Model model) {
         Task task = respository.findById(id);
         respository.delete(task);
         model.addAttribute("users", respository.getTasks());

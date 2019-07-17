@@ -31,13 +31,12 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 dependencies {
+    compile("org.springframework.boot:spring-boot-starter-amqp")
+    compile("org.springframework.amqp:spring-amqp")
     compile("org.springframework.boot:spring-boot-starter-web")
     compile("org.springframework.boot:spring-boot-starter-thymeleaf")
-    compile("org.springframework.boot:spring-boot-starter-activemq")
-    compile("org.apache.activemq:activemq-broker")
     compile("com.fasterxml.jackson.core:jackson-databind")
     testCompile('junit:junit:4.11')
     testCompile("org.springframework.boot:spring-boot-starter-test")
-    providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
     compile project(':common-library')
 }

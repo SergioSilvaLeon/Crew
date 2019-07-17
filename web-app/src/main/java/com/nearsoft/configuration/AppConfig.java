@@ -1,7 +1,5 @@
 package com.nearsoft.configuration;
 
-import com.nearsoft.commonlibrary.configuration.RabbitMqConfig;
-import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.rabbit.annotation.RabbitListenerConfigurer;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -14,11 +12,6 @@ import org.springframework.messaging.handler.annotation.support.DefaultMessageHa
 
 @Configuration
 public class AppConfig implements RabbitListenerConfigurer {
-
-    @Bean
-    public TopicExchange appExchange() {
-        return new TopicExchange(RabbitMqConfig.EXCHANGE_NAME_PRODUCT);
-    }
 
     @Bean
     public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory) {

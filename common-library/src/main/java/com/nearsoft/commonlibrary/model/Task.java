@@ -2,16 +2,15 @@ package com.nearsoft.commonlibrary.model;
 
 import org.springframework.data.annotation.Id;
 
-import java.io.Serializable;
-
-public class Task implements Serializable {
+public class Task {
 
     @Id
-    private String id;
-    private String name;
-    private String category;
+    public String id;
+    public String name;
+    public String category;
 
     public Task() {
+        super();
     }
 
     public Task(String name, String category) {
