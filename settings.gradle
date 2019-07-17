@@ -1,6 +1,5 @@
-pluginManagement {
-    repositories {
-        gradlePluginPortal()
-    }
-}
-rootProject.name = 'crew-task'
+rootProject.name = 'crew-service'
+include 'micro-service-task'
+include 'web-app'
+include 'common-library'
+
