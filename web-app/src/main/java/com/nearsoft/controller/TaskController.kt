@@ -39,7 +39,7 @@ class TaskController(private val respository: TaskRepository) {
     @PostMapping("/update/{id}")
     fun updateUser(@PathVariable("id") id: String, @Valid task: Task, result: BindingResult, model: Model): String {
         if (result.hasErrors()) {
-            task.setId(id)
+            task.id = id
             return "update-task"
         }
 
