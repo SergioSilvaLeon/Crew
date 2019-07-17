@@ -8,7 +8,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
 
@@ -22,12 +21,12 @@ public class TaskController {
         respository = dao;
     }
 
-    @GetMapping("/task")
+    @GetMapping("/addnewentery")
     public String showSignUpForm(Task task) {
         return "add-task";
     }
 
-    @PostMapping("/addTask")
+    @PostMapping("/addtask")
     public String addTask(Task task, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             return "add-task";
@@ -40,7 +39,6 @@ public class TaskController {
     @GetMapping("/edit/{id}")
     public String showUpdateForm(@PathVariable("id") String id, Model model) {
         Task task = respository.findById(id);
-
         model.addAttribute("task", task);
         return "update-task";
     }
@@ -48,6 +46,7 @@ public class TaskController {
     @PostMapping("/update/{id}")
     public String updateUser(@PathVariable("id") String id, @Valid Task task, BindingResult result, Model model) {
         if (result.hasErrors()) {
+            task.setId(id);
             return "update-task";
         }
 
@@ -60,14 +59,8 @@ public class TaskController {
     public String deleteUser(@PathVariable("id") String id, Model model) {
         Task task = respository.findById(id);
         respository.delete(task);
-        model.addAttribute("users", respository.getTasks());
+        model.addAttribute("tasks", respository.getTasks());
         return "index";
-    }
-
-    @GetMapping("/greeting")
-    public String greeting(@RequestParam(name = "name", required = false, defaultValue = "World") String name, Model model) {
-        model.addAttribute("name", name);
-        return "greeting";
     }
 
 }

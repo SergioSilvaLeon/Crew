@@ -9,6 +9,7 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TaskMicroService {
@@ -35,13 +36,13 @@ public class TaskMicroService {
     @RabbitListener(queues = RabbitMqConfig.QUEUE_GET_TASK_BY_ID)
     public Task findTaskById(String id) {
         mLogger.info("[x] Received Find Task by ID {}", id);
-        return mTaskRepository.findById(id).get();
+        Optional<Task> response = mTaskRepository.findById(id);
+        return response.orElseGet(() -> new Task("404", "Not", "Found"));
     }
 
     @RabbitListener(queues = RabbitMqConfig.QUEUE_DELETE_TASK)
     public void deleteTask(Task task) {
         mLogger.info("[x] Received Delete Task");
-        mTaskRepository.deleteAll();
         mTaskRepository.delete(task);
     }
 

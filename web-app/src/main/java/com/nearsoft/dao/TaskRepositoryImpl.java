@@ -38,11 +38,13 @@ public class TaskRepositoryImpl implements TaskRepository {
 
     @Override
     public Task findById(String id) {
-        return (Task) mRabbitTemplate.convertSendAndReceive(
+        Task response = (Task) mRabbitTemplate.convertSendAndReceive(
                 RabbitMqConfig.EXCHANGE_FIND_TASK_BY_ID,
                 RabbitMqConfig.ROUTING_KEY_TASK_BY_ID,
                 id
         );
+        mLogger.info("[x] Recieved response from findByID {}", response);
+        return response;
     }
 
     @Override
